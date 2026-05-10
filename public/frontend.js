@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==================== Event Listeners ====================
-functTheme Toggle
+function setupEventListeners() {
+  // Theme Toggle
   themeToggle.addEventListener('click', toggleTheme);
 
-  // ion setupEventListeners() {
   // Navigation
   navBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
