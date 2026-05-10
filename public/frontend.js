@@ -1,7 +1,6 @@
-// API Configuration
+
 const API_URL = 'https://books-backend-7umx.onrender.com/api';
 
-// State Management
 const state = {
   currentUser: null,
   token: null,
@@ -12,7 +11,6 @@ const state = {
   selectedBookForOrder: null,
 };
 
-// ==================== DOM Elements ====================
 const navBtns = document.querySelectorAll('.nav-btn');
 const sections = document.querySelectorAll('.section');
 const authModal = document.getElementById('authModal');
@@ -35,7 +33,6 @@ const usersContainer = document.getElementById('usersContainer');
 const ordersContainer = document.getElementById('ordersContainer');
 const profileContainer = document.getElementById('profileContainer');
 
-// ==================== Initialize ====================
 document.addEventListener('DOMContentLoaded', () => {
   initializeTheme();
   loadTokenFromStorage();
@@ -47,12 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
   loadUsers();
 });
 
-// ==================== Event Listeners ====================
 function setupEventListeners() {
-  // Theme Toggle
+ 
   themeToggle.addEventListener('click', toggleTheme);
 
-  // Navigation
   navBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       const section = e.target.dataset.section;
@@ -62,7 +57,6 @@ function setupEventListeners() {
     });
   });
 
-  // Auth Modal
   loginBtn.addEventListener('click', () => {
     showAuthModal('login');
   });
@@ -78,7 +72,6 @@ function setupEventListeners() {
     });
   });
 
-  // Auth Form Switching
   switchToRegister.addEventListener('click', (e) => {
     e.preventDefault();
     loginForm.classList.add('hidden');
@@ -91,14 +84,11 @@ function setupEventListeners() {
     loginForm.classList.remove('hidden');
   });
 
-  // Auth Forms
   loginFormElement.addEventListener('submit', handleLogin);
   registerFormElement.addEventListener('submit', handleRegister);
 
-  // Order Form
   orderForm.addEventListener('submit', handleCreateOrder);
 
-  // Close modals on outside click
   authModal.addEventListener('click', (e) => {
     if (e.target === authModal) {
       authModal.classList.remove('show');
@@ -112,11 +102,9 @@ function setupEventListeners() {
   });
 }
 
-// ==================== Section Management ====================
 function showSection(sectionId) {
   state.currentSection = sectionId;
 
-  // Update active button
   navBtns.forEach(btn => {
     btn.classList.remove('active');
     if (btn.dataset.section === sectionId) {
@@ -124,17 +112,14 @@ function showSection(sectionId) {
     }
   });
 
-  // Hide all sections
   sections.forEach(section => {
     section.classList.add('hidden');
   });
 
-  // Show selected section
   const selectedSection = document.getElementById(sectionId);
   if (selectedSection) {
     selectedSection.classList.remove('hidden');
 
-    // Load data if needed
     if (sectionId === 'my-orders' && state.token) {
       loadMyOrders();
     }
@@ -144,7 +129,6 @@ function showSection(sectionId) {
   }
 }
 
-// ==================== Authentication ====================
 function showAuthModal(form = 'login') {
   authModal.classList.add('show');
   if (form === 'login') {
@@ -270,7 +254,6 @@ function updateAuthUI() {
     profileBtn.classList.add('hidden');
   }
 }
-// ==================== Theme Management ====================
 function initializeTheme() {
   const savedTheme = localStorage.getItem('theme') || 'dark';
   setTheme(savedTheme);
@@ -292,7 +275,6 @@ function toggleTheme() {
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
   setTheme(newTheme);
 }
-// ==================== API Calls ====================
 async function loadBooks() {
   try {
     const response = await fetch(`${API_URL}/books`);
@@ -418,7 +400,7 @@ async function handleCreateOrder(e) {
     showNotification(result.message || 'Buyurtma muvaffaqiyatli yaratildi', 'success');
     orderModal.classList.remove('show');
     orderForm.reset();
-    loadBooks(); // Refresh books to update stock
+    loadBooks();
     state.selectedBookForOrder = null;
   } catch (error) {
     showNotification('Buyurtma yaratishda xato: ' + error.message, 'error');
@@ -452,13 +434,12 @@ async function cancelOrder(orderId) {
 
     showNotification(result.message || 'Buyurtma bekor qilindi', 'success');
     loadMyOrders();
-    loadBooks(); // Refresh books to update stock
+    loadBooks();
   } catch (error) {
     showNotification('Buyurtmani bekor qilishda xato: ' + error.message, 'error');
   }
 }
 
-// ==================== Rendering ====================
 function renderBooks() {
   if (state.books.length === 0) {
     booksContainer.innerHTML = '<div class="loading">Kitoblar topilmadi</div>';
@@ -615,7 +596,6 @@ function renderProfile() {
   `;
 }
 
-// ==================== Order Modal ====================
 function openOrderModal(book) {
   state.selectedBookForOrder = book;
 
@@ -647,7 +627,6 @@ document.addEventListener('input', (e) => {
   }
 });
 
-// ==================== Notifications ====================
 function showNotification(message, type = 'info') {
   const notification = document.getElementById('notification');
   notification.textContent = message;
@@ -659,7 +638,6 @@ function showNotification(message, type = 'info') {
   }, 4000);
 }
 
-// ==================== Helpers ====================
 function escapeHtml(text) {
   if (!text) return '';
   const div = document.createElement('div');
@@ -676,5 +654,4 @@ function getStatusLabel(status) {
   return labels[status] || status;
 }
 
-// Start with books section
 showSection('books');

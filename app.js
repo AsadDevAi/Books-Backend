@@ -13,7 +13,6 @@ const app = express();
 
 app.use(express.json());
 
-// Serve static files (HTML, CSS, JS)
 app.use(express.static('public'));
 
 app.use("/api/auth", authRoutes);
